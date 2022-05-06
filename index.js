@@ -28,8 +28,8 @@ async function run() {
     app.get("/fruit/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      const singlefruit = await fruitscollection.findOne(query);
-      res.send(singlefruit);
+      const products = await fruitscollection.findOne(query);
+      res.send(products);
     });
   } finally {
   }
