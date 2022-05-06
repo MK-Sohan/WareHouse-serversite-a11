@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 require("dotenv").config();
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.afbgu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.iewxe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -16,20 +16,36 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const database = client.db("allfroots");
-    const fruitscollection = database.collection("froots");
-    app.get("/fruit", async (req, res) => {
+    const database = client.db("fruitemanagement");
+    const fruitCollection = database.collection("fruites");
+    app.get("/inventory", async (req, res) => {
       const query = {};
-      const cursor = fruitscollection.find(query);
-      const allfruits = await cursor.toArray();
-      res.send(allfruits);
+      const cursor = fruitCollection.find(query);
+      const fruits = await cursor.toArray();
+      res.send(fruits);
     });
 
-    app.get("/fruit/:id", async (req, res) => {
+    app.get("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      const products = await fruitscollection.findOne(query);
-      res.send(products);
+      const details = await fruitCollection.findOne(query);
+      res.send(details);
+    });
+
+    // Post
+    app.post("/inventory", async (req, res) => {
+      const newaddFruit = req.body;
+      const result = await fruitCollection.insertOne(newaddFruit);
+      console.log(result);
+      res.send(result);
+    });
+
+    // Delete
+    app.delete("/inventory/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await fruitCollection.deleteOne(query);
+      res.send(result);
     });
   } finally {
   }
