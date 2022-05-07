@@ -47,6 +47,40 @@ async function run() {
       const result = await fruitCollection.deleteOne(query);
       res.send(result);
     });
+
+    // Put
+    app.put("/deliver/:id", async (req, res) => {
+      const id = req.params.id;
+      const newQuantity = req.body;
+      console.log(newQuantity);
+      const deliver = newQuantity.quantity - 1;
+      const query = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          quantity: deliver,
+        },
+      };
+
+      const result = await fruitCollection.updateOne(query, updateDoc, options);
+      res.send(result);
+    });
+
+    // update
+    app.put("/inventory/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateProduct = req.body;
+      const query = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          quantity: updateProduct.newQuantity,
+        },
+      };
+
+      const result = await fruitCollection.updateOne(query, updateDoc, options);
+      res.send(result);
+    });
   } finally {
   }
 }
