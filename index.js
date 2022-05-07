@@ -85,12 +85,22 @@ async function run() {
     // Jwt
     app.post("/login", (req, res) => {
       const email = req.body;
-      console.log(email);
+
       const accesstoken = jwt.sign(email, process.env.ACCESS_TOKEN, {
         expiresIn: "100m",
       });
       res.send({ accesstoken });
     });
+
+    // try======================
+
+    // app.post("/addproduct", async (req, res) => {
+    //   const tokenInfo = req.headers.authorization;
+    //   console.log(tokenInfo);
+    //   const [authemail, accessToken] = token.split(" ");
+    // });
+
+    // try=============
   } finally {
   }
 }
