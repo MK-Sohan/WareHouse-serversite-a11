@@ -36,9 +36,20 @@ async function run() {
     // Post
     app.post("/inventory", async (req, res) => {
       const newaddFruit = req.body;
+      // console.log(newaddFruit);
+
       const result = await fruitCollection.insertOne(newaddFruit);
       console.log(result);
+
       res.send(result);
+    });
+
+    app.get("/myitems", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const cursor = fruitCollection.find(query);
+      const fruits = await cursor.toArray();
+      res.send(fruits);
     });
 
     // Delete
