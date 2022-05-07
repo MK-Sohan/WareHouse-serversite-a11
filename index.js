@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 app.use(cors());
@@ -80,6 +81,15 @@ async function run() {
 
       const result = await fruitCollection.updateOne(query, updateDoc, options);
       res.send(result);
+    });
+    // Jwt
+    app.post("/login", (req, res) => {
+      const email = req.body;
+      console.log(email);
+      const accesstoken = jwt.sign(email, process.env.ACCESS_TOKEN, {
+        expiresIn: "100m",
+      });
+      res.send({ accesstoken });
     });
   } finally {
   }
