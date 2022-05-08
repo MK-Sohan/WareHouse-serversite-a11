@@ -102,16 +102,6 @@ async function run() {
       });
       res.send({ accesstoken });
     });
-
-    // try======================
-
-    // app.post("/addproduct", async (req, res) => {
-    //   const tokenInfo = req.headers.authorization;
-    //   console.log(tokenInfo);
-    //   const [authemail, accessToken] = token.split(" ");
-    // });
-
-    // try=============
   } finally {
   }
 }
